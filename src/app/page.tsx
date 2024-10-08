@@ -1,15 +1,7 @@
-import Card from "./components/Card";
-
-const getData = async () => {
-  const res = await fetch("https://dummyjson.com/users");
-  const data = await res.json();
-
-  return data.users;
-};
+import { getUsers } from "@/server/queries";
 
 export default async function Home() {
-  const data = await getData();
-
+  const users = await getUsers();
   return (
     <div className="p-8 w-screen h-screen overflow-hidden">
       <h1 className="text-4xl font-bold">Mafia Tycoon</h1>
@@ -17,17 +9,12 @@ export default async function Home() {
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-bold">Player</h2>
           <div className="grid grid-cols-2 pl-4 border-l-2 border-gray-500 h-full">
-            {data.map((user: any) => (
-              <Card
-                key={user.id}
-                title={`${user.firstName} ${user.lastName}`}
-                description={user.ssn}
-                image={user.image}
-              >
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                  Play
-                </button>
-              </Card>
+            {users.map((user) => (
+              <div key={user.id} className="flex flex-col gap-2">
+                <h3 className="text-lg font-bold">{user.name}</h3>
+                <p className="text-sm">{user.age}</p>
+                <p className="text-sm">{user.money}</p>
+              </div>
             ))}
           </div>
         </div>
