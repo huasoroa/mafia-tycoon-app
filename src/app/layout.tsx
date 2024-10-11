@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/themeProvider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -32,9 +33,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ligaSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased w-full h-full bg-gray-900`}
+        className={`${ligaSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

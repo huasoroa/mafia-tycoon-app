@@ -1,5 +1,9 @@
 import { db } from "./db";
 
+export const getCharacters = async () => {
+  return await db.query.characters.findMany();
+};
+
 export const getUsers = async () => {
   return await db.query.users.findMany();
 };
