@@ -71,8 +71,8 @@ export const verificationTokens = createTable(
 export const authenticators = createTable(
   "authenticator",
   {
-    credentialID: text("credential_id").notNull().unique(),
-    userId: text("userId")
+    credentialId: text("credential_id").notNull().unique(),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     providerAccountId: text("provider_account_id").notNull(),
@@ -84,7 +84,7 @@ export const authenticators = createTable(
   },
   (authenticator) => ({
     compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
+      columns: [authenticator.userId, authenticator.credentialId],
     }),
   })
 );
@@ -111,15 +111,17 @@ export const characters = createTable("characters", {
     .references(() => users.id),
 });
 
-export const userToCharactersRelations = relations(users, ({ many }) => ({
+export const userRelations = relations(users, ({ many }) => ({
   characters: many(characters),
 }));
 
-export const charactersToUsersRelations = relations(characters, ({ one }) => ({
+export const charactersRelations = relations(characters, ({ one, many }) => ({
   user: one(users, {
     fields: [characters.userId],
     references: [users.id],
   }),
+  charactersToJobs: many(charactersToJobs),
+  charactersToProperties: many(charactersToProperties),
 }));
 
 export const jobs = createTable("jobs", {
@@ -132,7 +134,7 @@ export const jobs = createTable("jobs", {
 });
 
 export const jobsRelations = relations(jobs, ({ many }) => ({
-  usersToJobs: many(usersToJobs),
+  charactersToJobs: many(charactersToJobs),
 }));
 
 export const properties = createTable("properties", {
@@ -147,60 +149,63 @@ export const properties = createTable("properties", {
 });
 
 export const propertiesRelations = relations(properties, ({ many }) => ({
-  usersToProperties: many(usersToProperties),
+  charactersToProperties: many(charactersToProperties),
 }));
 
-export const usersToJobs = createTable(
-  "users_to_jobs",
+export const charactersToJobs = createTable(
+  "characters_to_jobs",
   {
-    userId: text("user_id")
+    characterId: text("character_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => characters.id),
     jobId: text("job_id")
       .notNull()
       .references(() => jobs.id),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.jobId] }),
+    pk: primaryKey({ columns: [t.characterId, t.jobId] }),
   })
 );
 
-export const usersToJobsRelations = relations(usersToJobs, ({ one }) => ({
-  job: one(jobs, {
-    fields: [usersToJobs.jobId],
-    references: [jobs.id],
-  }),
-  user: one(users, {
-    fields: [usersToJobs.userId],
-    references: [users.id],
-  }),
-}));
+export const charactersToJobsRelations = relations(
+  charactersToJobs,
+  ({ one }) => ({
+    job: one(jobs, {
+      fields: [charactersToJobs.jobId],
+      references: [jobs.id],
+    }),
+    character: one(characters, {
+      fields: [charactersToJobs.characterId],
+      references: [characters.id],
+    }),
+  })
+);
 
-export const usersToProperties = createTable(
-  "users_to_properties",
+export const charactersToProperties = createTable(
+  "characters_to_properties",
   {
-    userId: text("user_id")
+    characterId: text("character_id")
       .notNull()
-      .references(() => users.id),
+      .references(() => characters.id),
     propertyId: text("property_id")
       .notNull()
       .references(() => properties.id),
   },
   (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.propertyId] }),
+    pk: primaryKey({ columns: [t.characterId, t.propertyId] }),
   })
 );
 
-export const usersToPropertiesRelations = relations(
-  usersToProperties,
+export const charactersToPropertiesRelations = relations(
+  charactersToProperties,
   ({ one }) => ({
     property: one(properties, {
-      fields: [usersToProperties.propertyId],
+      fields: [charactersToProperties.propertyId],
       references: [properties.id],
     }),
-    user: one(users, {
-      fields: [usersToProperties.userId],
-      references: [users.id],
+    character: one(characters, {
+      fields: [charactersToProperties.characterId],
+      references: [characters.id],
     }),
   })
 );

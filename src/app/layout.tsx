@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/themeProvider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${ligaSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased w-full h-full`}
+        className={`${ligaSans.variable} ${geistSans.variable} ${geistMono.variable} antialiased w-screen h-screen`}
       >
         <ThemeProvider
           attribute="class"
@@ -41,6 +42,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster />
+
           {children}
         </ThemeProvider>
       </body>
