@@ -4,8 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import BankCountUp from "./BankCountUp";
+import CashCountUp from "./CashCountUp";
+import { SelectCharacter } from "@/server/db/schema";
 
-const PlayerPanel = ({ character }: { character: any }) => {
+const PlayerPanel = ({ character }: { character: SelectCharacter }) => {
   const [cash, setCash] = useState<number>(character.cash);
   const [animateMoney, setAnimateMoney] = useState<boolean>(false);
   const [bank, setBank] = useState<number>(character.bank);
@@ -17,9 +20,7 @@ const PlayerPanel = ({ character }: { character: any }) => {
     setAnimateMoney(true);
   };
 
-  const handleMoveToBankClick = (
-    _event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMoveToBankClick = () => {
     const currentCash = cash;
     setBank((prevBank) => prevBank + currentCash);
     setAnimateBank(true);
@@ -48,7 +49,7 @@ const PlayerPanel = ({ character }: { character: any }) => {
             }`}
             onAnimationIteration={() => setAnimateMoney(false)}
           >
-            Money: {cash}
+            Money: <CashCountUp cash={cash} />
           </p>
           <p
             className={`text-sm transition-colors ${
@@ -56,7 +57,7 @@ const PlayerPanel = ({ character }: { character: any }) => {
             }`}
             onAnimationIteration={() => setAnimateBank(false)}
           >
-            Bank: {bank}
+            Bank: <BankCountUp bank={bank} />
           </p>
           <Button variant={"outline"} onClick={handleAddMoneyClick}>
             Add money

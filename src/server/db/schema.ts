@@ -21,6 +21,8 @@ export const users = createTable("users", {
   image: text("image"),
 });
 
+export type SelectUser = typeof users.$inferSelect;
+
 // ===== AUTH =====
 export const accounts = createTable(
   "account",
@@ -108,8 +110,10 @@ export const characters = createTable("characters", {
   bank: integer("bank").notNull().default(500),
   userId: text("user_id")
     .notNull()
-    .references(() => users.id),
+    .references(() => users.id, { onDelete: "cascade" }),
 });
+
+export type SelectCharacter = typeof characters.$inferSelect;
 
 export const userRelations = relations(users, ({ many }) => ({
   characters: many(characters),
@@ -129,9 +133,12 @@ export const jobs = createTable("jobs", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: varchar("name", { length: 255 }).notNull(),
+  description: text("description"),
   salary: integer("salary").notNull().default(0),
   type: text("type", { enum: ["legal", "illegal"] }).notNull(),
 });
+
+export type SelectJob = typeof jobs.$inferSelect;
 
 export const jobsRelations = relations(jobs, ({ many }) => ({
   charactersToJobs: many(charactersToJobs),
@@ -148,6 +155,8 @@ export const properties = createTable("properties", {
   upkeep: integer("upkeep").notNull().default(0),
 });
 
+export type SelectProperty = typeof properties.$inferSelect;
+
 export const propertiesRelations = relations(properties, ({ many }) => ({
   charactersToProperties: many(charactersToProperties),
 }));
@@ -157,7 +166,7 @@ export const charactersToJobs = createTable(
   {
     characterId: text("character_id")
       .notNull()
-      .references(() => characters.id),
+      .references(() => characters.id, { onDelete: "cascade" }),
     jobId: text("job_id")
       .notNull()
       .references(() => jobs.id),
@@ -186,7 +195,7 @@ export const charactersToProperties = createTable(
   {
     characterId: text("character_id")
       .notNull()
-      .references(() => characters.id),
+      .references(() => characters.id, { onDelete: "cascade" }),
     propertyId: text("property_id")
       .notNull()
       .references(() => properties.id),

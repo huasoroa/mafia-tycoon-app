@@ -1,4 +1,5 @@
 import {
+  getAllJobs,
   getCharacters,
   getJobsByCharacter,
   getProperties,
@@ -9,6 +10,7 @@ import PropertiesPanel from "./components/PropertiesPanel";
 
 const Game = async () => {
   const characters = await getCharacters();
+  const allJobs = await getAllJobs();
   const jobs = await getJobsByCharacter(characters[0].id);
   const properties = await getProperties();
 
@@ -17,7 +19,7 @@ const Game = async () => {
       <h1 className="text-4xl font-bold">Mafia Tycoon</h1>
       <div className="grid grid-cols-3 gap-4 grid-flow-row mt-4">
         <PlayerPanel character={characters[0]} />
-        <JobsPanel jobs={jobs} />
+        <JobsPanel jobs={allJobs} />
         <PropertiesPanel properties={properties} />
       </div>
     </div>
