@@ -1,7 +1,6 @@
 import {
   getAllJobs,
   getCharacters,
-  getJobsByCharacter,
   getProperties,
 } from "@/server/queries";
 import JobsPanel from "./components/JobsPanel";
@@ -11,7 +10,6 @@ import PropertiesPanel from "./components/PropertiesPanel";
 const Game = async () => {
   const characters = await getCharacters();
   const allJobs = await getAllJobs();
-  const jobs = await getJobsByCharacter(characters[0].id);
   const properties = await getProperties();
 
   return (

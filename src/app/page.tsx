@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+
 import Link from "next/link";
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center">
       <h1 className="text-4xl font-ligaSans">

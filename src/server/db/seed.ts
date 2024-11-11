@@ -3,14 +3,7 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { count } from "drizzle-orm/sql";
 import { Confirm } from "enquirer";
 import { Pool } from "pg";
-import {
-  characters,
-  jobs,
-  properties,
-  users,
-  usersToJobs,
-  usersToProperties,
-} from "./schema";
+import { characters, jobs, properties, users } from "./schema";
 
 config({ path: [".env.local", ".env"] });
 
@@ -42,8 +35,6 @@ export const seedDatabase = async () => {
 
     if (!shouldSeed) return console.log("🚫 - Database already seeded");
 
-    await db.delete(usersToProperties);
-    await db.delete(usersToJobs);
     await db.delete(characters);
     await db.delete(properties);
     await db.delete(jobs);

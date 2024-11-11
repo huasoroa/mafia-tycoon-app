@@ -12,7 +12,9 @@ The game will be a simple crime tycoon game where you can play as a mafia capo a
 
 - [x] Create a new Next.js app
 - [x] Deploy app
-- [ ] Mock ui using fake data
-- [X] Create a new Postgres database
-- [X] Connect to database
+- [x] Mock ui using fake data
+- [x] Create a new Postgres database
+- [x] Connect to database
 - [ ] Create player with passive income generation
+  - [ ] Add repeatable action (beg) that can provide a random amount of money
+  - [ ] Add basic passive income generation (have someone deal for you)

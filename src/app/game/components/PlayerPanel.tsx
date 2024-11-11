@@ -2,18 +2,17 @@
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import BankCountUp from "./BankCountUp";
 import CashCountUp from "./CashCountUp";
 import { SelectCharacter } from "@/server/db/schema";
+import { toast } from "sonner";
 
 const PlayerPanel = ({ character }: { character: SelectCharacter }) => {
   const [cash, setCash] = useState<number>(character.cash);
   const [animateMoney, setAnimateMoney] = useState<boolean>(false);
   const [bank, setBank] = useState<number>(character.bank);
   const [animateBank, setAnimateBank] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const handleAddMoneyClick = () => {
     setCash((prevCash) => prevCash + 100);
@@ -25,8 +24,7 @@ const PlayerPanel = ({ character }: { character: SelectCharacter }) => {
     setBank((prevBank) => prevBank + currentCash);
     setAnimateBank(true);
     setCash(0);
-    toast({
-      title: "Money moved to bank",
+    toast.message("Money moved to bank", {
       description: `You have ${bank + currentCash} in your bank`,
     });
   };
@@ -44,17 +42,15 @@ const PlayerPanel = ({ character }: { character: SelectCharacter }) => {
           <p className="text-sm">Age: {character.age}</p>
           <p className="text-sm">Gender: {character.gender}</p>
           <p
-            className={`text-sm transition-colors ${
-              animateMoney ? "animate-pulse text-green-800" : ""
-            }`}
+            className={`text-sm transition-colors ${animateMoney ? "animate-pulse text-green-800" : ""
+              }`}
             onAnimationIteration={() => setAnimateMoney(false)}
           >
             Money: <CashCountUp cash={cash} />
           </p>
           <p
-            className={`text-sm transition-colors ${
-              animateBank ? "animate-pulse text-green-800" : ""
-            }`}
+            className={`text-sm transition-colors ${animateBank ? "animate-pulse text-green-800" : ""
+              }`}
             onAnimationIteration={() => setAnimateBank(false)}
           >
             Bank: <BankCountUp bank={bank} />

@@ -10,9 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        geistSans: "var(--font-geist-sans)",
-        geistMono: "var(--font-geist-mono)",
-        ligaSans: "var(--font-liga-sans)",
+        sans: "var(--font-geist-sans)",
       },
       colors: {
         background: "hsl(var(--background))",
